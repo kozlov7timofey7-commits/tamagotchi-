@@ -14,6 +14,7 @@ html,body{height:100%;margin:0;overflow:hidden;background:#150f20}
 .hdr{flex:none;height:34px;display:flex;gap:6px;align-items:center}
 .pill{background:var(--card);border:2.5px solid var(--ol);border-radius:18px;padding:3px 10px;font-size:13px;box-shadow:0 3px 0 var(--sh);white-space:nowrap;cursor:pointer}
 #age{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.streak{display:inline-flex;align-items:center;gap:2px;margin-left:8px;vertical-align:middle;color:#e8741a}.streak .ic{display:block}.streak.off{filter:grayscale(1);opacity:.6}
 .stage{position:relative;flex:none;height:232px;background:var(--wall);border:3.5px solid var(--ol);border-radius:26px;overflow:hidden;box-shadow:0 5px 0 var(--sh)}
 .room{position:absolute;inset:0;width:100%;height:100%;z-index:0}
 .bubble{position:absolute;z-index:3;top:8px;left:50%;transform:translateX(-50%);max-width:92%;background:#fff;color:#3a2f4b;border:2.5px solid var(--ol);border-radius:16px;padding:3px 12px;font-size:13px;text-align:center;white-space:nowrap}
@@ -77,7 +78,7 @@ input{font:inherit;font-size:16px;font-weight:800;width:100%;padding:8px 12px;bo
 .gbig{font-size:30px;padding:8px 18px;margin:6px 4px;background:var(--card);color:var(--tx);box-shadow:0 4px 0 var(--sh)}
 #th{margin-top:30px;font-size:22px}
 .q{font-size:48px;padding-top:60px;display:flex;justify-content:center;align-items:center;gap:10px}.res .big{padding-top:50px;display:flex;justify-content:center}.res .rt{font-size:22px;font-weight:900;margin-top:8px}.res .rs{margin-top:8px;font-size:16px;color:var(--mut)}
-.pets{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px}.pc{padding:4px 2px;border-radius:16px;background:var(--card);color:var(--tx);box-shadow:0 3px 0 var(--sh);font-size:11px;border-width:2.5px}.pc.on{background:#fff3d6;color:#4a2b00;border-color:#c98418;box-shadow:0 3px 0 #c98418}.pc svg{display:block;width:100%;height:62px}
+.pets{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px}.pc{padding:4px 2px;border-radius:16px;background:var(--card);color:var(--tx);box-shadow:0 3px 0 var(--sh);font-size:11px;border-width:2.5px}.pc.on{background:#fff3d6;color:#4a2b00;border-color:#c98418;box-shadow:0 3px 0 #c98418}.pc svg{display:block;width:100%;height:62px}
 .pv svg{display:block;margin:0 auto;height:170px;width:130px}.cn{text-align:center;font-size:13px;color:var(--mut);margin:-2px 0 8px}.pk .sw{justify-content:center}
 .lb{font-size:12px;color:var(--mut);margin:8px 2px 4px}
 .hl{position:relative;z-index:45;box-shadow:0 0 0 3px #ffc83d,0 0 0 900px rgba(20,12,30,.72)!important}
@@ -115,7 +116,7 @@ const fit=()=>{const a=document.activeElement;if(a&&a.tagName==='INPUT')return;H
 document.addEventListener('focusin',e=>{if(e.target.tagName==='INPUT')$('ovl').classList.add('kb')});
 document.addEventListener('focusout',()=>{$('ovl').classList.remove('kb');setTimeout(fit,350)});
 const OL='#3a2f4b',nf=()=>'';
-const IC={x:'<path d="M6 6l12 12M18 6L6 18" fill="none" stroke-width="3.200"/>',
+const IC={x:'<path d="M6 6l12 12M18 6L6 18" fill="none" stroke-width="3.200"/>',flame:'<path d="M12 2.200c.8 3.800 6 6.200 6 12a6 6 0 0 1-12 0c0-3 1.800-5 3-7 .6 2 1.600 3 2.600 3-.8-2.500-.6-5.200.4-8z" fill="#ff8a1f"/><path d="M12 11c1 2.200 3.200 3.200 3.200 5.600a3.200 3.200 0 0 1-6.400 0c0-1.600 1-2.700 1.600-3.800.6 1 1.100 1.500 1.600 1.500z" fill="#ffd24a"/><path d="M8.200 11.500c-1 1.500-1.400 3-1 4.500" fill="none" stroke="#ffb15a" stroke-width="1.400"/>',
 coin:'<circle cx="12" cy="12" r="9.5" fill="#ffc83d"/><circle cx="12" cy="12" r="6.8" fill="#ffe27a"/><path d="M12 7.800l1.300 2.700 3 .4-2.200 2.100.5 3-2.600-1.400-2.600 1.400.5-3-2.200-2.100 3-.4z" fill="#ffb21f" stroke="none"/><path d="M5.800 9a7 7 0 0 1 4-3.600" fill="none" stroke="#fff" stroke-width="1.600" opacity=".8"/>',
 gear:'<path d="M19.26 9.75 L22.05 10.27 L22.05 13.73 L19.26 14.25 L18.72 15.55 L20.33 17.89 L17.89 20.33 L15.55 18.72 L14.25 19.26 L13.73 22.05 L10.27 22.05 L9.75 19.26 L8.45 18.72 L6.11 20.33 L3.67 17.89 L5.28 15.55 L4.74 14.25 L1.95 13.73 L1.95 10.27 L4.74 9.75 L5.28 8.45 L3.67 6.11 L6.11 3.67 L8.45 5.28 L9.75 4.74 L10.27 1.95 L13.73 1.95 L14.25 4.74 L15.55 5.28 L17.89 3.67 L20.33 6.11 L18.72 8.45Z" fill="#b9a0ff"/><circle cx="12" cy="12" r="5.200" fill="#cdb9ff"/><circle cx="12" cy="12" r="2.600" fill="#fff"/><path d="M8 9.800a4.800 4.800 0 0 1 3-2.500" fill="none" stroke="#fff" stroke-width="1.400" opacity=".8"/>',
 bowl:'<circle cx="8.500" cy="7.500" r="2" fill="#b9733f"/><circle cx="13.500" cy="6.800" r="2" fill="#c9895a"/><circle cx="11" cy="9" r="1.800" fill="#b9733f"/><circle cx="16" cy="8.600" r="1.700" fill="#c9895a"/><path d="M2.500 11h19c0 5.500-4 9.500-9.500 9.500S2.500 16.500 2.500 11z" fill="#ff8f4a"/><ellipse cx="12" cy="11" rx="9.500" ry="2" fill="#ffc18a"/><path d="M6 14.500c.8 2 2.200 3.200 4 3.800" fill="none" stroke="#fff" stroke-width="1.400" opacity=".7"/>',
@@ -199,15 +200,8 @@ bunny:{n:'Зайка',nm:'Пушок',say:['Хруп-хруп','Я пушист�
  muz:K=>`<circle cx="-9" cy="15" r="9" fill="${K.a}" opacity=".85"/><circle cx="9" cy="15" r="9" fill="${K.a}" opacity=".85"/><circle cx="-8" cy="14" r="1" fill="${K.d}" opacity=".7"/><circle cx="-4" cy="17" r="1" fill="${K.d}" opacity=".7"/><circle cx="8" cy="14" r="1" fill="${K.d}" opacity=".7"/><circle cx="4" cy="17" r="1" fill="${K.d}" opacity=".7"/>`,
  nose:()=>`<path class="nose" d="M-4.500 6.500L4.500 6.500L0 12.500Z" fill="#ff8fa3" stroke="${OL}" stroke-width="1.500" stroke-linejoin="round"/><path d="M0 12.500v3" stroke="${OL}" stroke-width="1.500"/>`,
  ext:()=>`<rect x="-3.800" y="19" width="7.600" height="8.500" rx="2" fill="#fff" stroke="${OL}" stroke-width="1.800"/><path d="M0 19.500v7.500" stroke="${OL}" stroke-width="1.200"/>`},
-fox:{n:'Лисёнок',nm:'Рыжик',say:['Ня-я!','Я хитрый и милый!','Дай ягодку?'],eye:{dx:17,y:-4},hat:{x:105,y:57,r:-6,s:.95},neck:{y:150,w:66},
- pal:[{n:'Рыжий',m:'#f07a3a',a:'#fff1e3',d:'#7a3416'},{n:'Серебристый',m:'#9aa5b8',a:'#f1f4f9',d:'#4a5468'},{n:'Золотистый',m:'#f4b942',a:'#fff4d6',d:'#a8741a'},{n:'Арктический',m:'#eef3fb',a:'#ffffff',d:'#9fb0cc'}],
- food:[{i:'chicken',t:'Курочка',c:5,f:25,u:0},{i:'grapes',t:'Ягоды',c:12,f:45,u:10},{i:'cheese',t:'Сыр',c:30,f:80,u:25}],
- tail:K=>`<g class="tail" style="transform-origin:140px 230px"><clipPath id="tf${K.u}"><path d="M138 238Q212 252 201 182Q170 206 138 216Z"/></clipPath><path d="M138 238Q212 252 201 182Q170 206 138 216Z" ${st(K.M)}/><g clip-path="url(#tf${K.u})"><path d="M146 232Q190 238 194 204Q170 220 146 224Z" fill="${K.a}" opacity=".55"/><path d="M186 176Q214 196 206 232L188 230Q186 204 186 176Z" fill="#fff"/><path d="M158 228q8 0 14-4M170 236q10-2 16-8" stroke="${mix(K.m,-.2)}" stroke-width="2" fill="none" stroke-linecap="round"/></g><path d="M138 238Q212 252 201 182Q170 206 138 216Z" fill="none" stroke="${OL}" stroke-width="3.500" stroke-linejoin="round"/></g>`,
- earsB:K=>`<g class="ear" style="transform-origin:78px 66px"><path d="M56 68L52 14L100 50Z" ${st(K.M)}/><path d="M62 58L60 30L86 50Z" fill="${K.D}"/><path d="M66 52l1-8M72 50l1-10" stroke="${K.a}" stroke-width="2" stroke-linecap="round" opacity=".8"/></g><g class="ear" style="transform-origin:132px 66px"><path d="M154 68L158 14L110 50Z" ${st(K.M)}/><path d="M148 58L150 30L124 50Z" fill="${K.D}"/><path d="M144 52l-1-8M138 50l-1-10" stroke="${K.a}" stroke-width="2" stroke-linecap="round" opacity=".8"/></g>`,
- pat:K=>`<path d="M57 104Q80 100 105 124Q75 132 56 118Z M153 104Q130 100 105 124Q135 132 154 118Z" fill="${K.a}"/><path d="M56 118l6 6 3-5 5 6 4-5M154 118l-6 6-3-5-5 6-4-5" fill="none" stroke="${K.a}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M105 50q-5 14-3 26h6q2-12-3-26z" fill="${K.a}" opacity=".5"/>`,
- nose:()=>`<path d="M-6 6L6 6L0 13Z" fill="#2a2433" stroke="#2a2433" stroke-width="1.500" stroke-linejoin="round"/><circle cx="-1.500" cy="7.500" r="1.100" fill="#fff" opacity=".7"/>`,
- ext:()=>whisk,
- feet:K=>K.d}};
+};
+if(S.pet&&!PETS[S.pet])S.pet=null;
 const ITEMS=[{id:'cap',t:'Синяя кепка',slot:'head',c:40},{id:'crown',t:'Корона',slot:'head',c:90},{id:'glass',t:'Очки',slot:'face',c:50},{id:'scarf',t:'Зелёный шарф',slot:'neck',c:35},{id:'bow',t:'Бабочка',slot:'neck',c:25},{id:'tshirt',t:'Красная футболка',slot:'body',c:60}];
 const byId=id=>ITEMS.find(i=>i.id===id);
 Object.keys(S.eq).forEach(k=>{if(!ITEMS.some(i=>i.id===S.eq[k]))delete S.eq[k]});S.own=S.own.filter(id=>ITEMS.some(i=>i.id===id));
@@ -241,7 +235,7 @@ function petInner(type,ci,w,uid){const P=PETS[type],C=P.pal[ci],N=P.neck,H=P.hat
  s+=`<ellipse cx="80" cy="244" rx="17" ry="9" ${st(ft)}/><ellipse cx="130" cy="244" rx="17" ry="9" ${st(ft)}/><path d="M73 241v6M80 243v6M87 241v6M123 241v6M130 243v6M137 241v6" stroke="${dk}" stroke-width="1.800" stroke-linecap="round" opacity=".7"/>`;
  if(w.body==='tshirt')s+=`<g clip-path="url(#bc${u})"><ellipse cx="105" cy="194" rx="44" ry="50" fill="#e5484d" stroke="${OL}" stroke-width="3.500"/><path d="M58 228Q105 242 152 228V252H58Z" fill="#cf3640"/><path d="M58 228Q105 242 152 228" fill="none" stroke="#8f1f27" stroke-width="2.500"/><path d="M78 176q-3 18-2 34M132 176q3 18 2 34" stroke="#ff8a95" stroke-width="2.500" fill="none" opacity=".5" stroke-linecap="round"/><path d="M80 150Q105 172 130 150" fill="none" stroke="#8f1f27" stroke-width="7" stroke-linecap="round"/><path d="M80 150Q105 172 130 150" fill="none" stroke="#c9323c" stroke-width="4" stroke-linecap="round"/></g>`;
  s+=`<ellipse cx="62" cy="198" rx="10" ry="19" transform="rotate(14 62 198)" ${st(K.M)}/><ellipse cx="148" cy="198" rx="10" ry="19" transform="rotate(-14 148 198)" ${st(K.M)}/><path d="M56 212l2 4M62 214v5M68 212l-2 5M142 212l-2 5M148 214v5M154 212l-2 4" stroke="${dk}" stroke-width="1.600" stroke-linecap="round" opacity=".7" transform="translate(0 -2)"/>`;
- if(w.body==='tshirt')s+=`<ellipse cx="64" cy="184" rx="14" ry="11.500" transform="rotate(14 64 184)" fill="#e5484d" stroke="${OL}" stroke-width="3.500"/><path d="M52 191Q63 197 75 190" fill="none" stroke="#8f1f27" stroke-width="2.500" stroke-linecap="round"/><path d="M58 180q4-3 9-2" stroke="#ff8a95" stroke-width="2.200" fill="none" stroke-linecap="round" opacity=".7"/><ellipse cx="146" cy="184" rx="14" ry="11.500" transform="rotate(-14 146 184)" fill="#e5484d" stroke="${OL}" stroke-width="3.500"/><path d="M135 190Q147 197 158 191" fill="none" stroke="#8f1f27" stroke-width="2.500" stroke-linecap="round"/><path d="M141 178q4-2 9 0" stroke="#ff8a95" stroke-width="2.200" fill="none" stroke-linecap="round" opacity=".7"/>`;
+ if(w.body==='tshirt')s+=`<path d="M76 166C66 168 56 176 52 188L53 192C58 198 67 200 75 196L81 178Z" fill="#e5484d" stroke="${OL}" stroke-width="3.500" stroke-linejoin="round"/><path d="M53.500 191C58 196 66 199 74.500 195" fill="none" stroke="#8f1f27" stroke-width="2.500" stroke-linecap="round"/><path d="M60 177q4-4 10-6" stroke="#ff8a95" stroke-width="2.200" fill="none" stroke-linecap="round" opacity=".7"/><path d="M134 166C144 168 154 176 158 188L157 192C152 198 143 200 135 196L129 178Z" fill="#e5484d" stroke="${OL}" stroke-width="3.500" stroke-linejoin="round"/><path d="M156.500 191C152 196 144 199 135.500 195" fill="none" stroke="#8f1f27" stroke-width="2.500" stroke-linecap="round"/><path d="M150 177q-4-4-10-6" stroke="#ff8a95" stroke-width="2.200" fill="none" stroke-linecap="round" opacity=".7"/>`;
  s+=`<circle cx="105" cy="98" r="50" ${st(K.M)}/><g clip-path="url(#hc${u})"><ellipse cx="86" cy="66" rx="14" ry="7" fill="#fff" opacity=".28" transform="rotate(-30 86 66)"/>`+(P.pat||nf)(K)+`</g>`;
  const eye=x=>`<g class="eye"><ellipse cx="${x}" cy="${E.y}" rx="7" ry="8.500" fill="#1b1b24"/><ellipse cx="${x}" cy="${E.y+3.500}" rx="4.500" ry="3" fill="#5a4a8a" opacity=".6"/><circle cx="${x+2.500}" cy="${E.y-3.500}" r="3" fill="#fff"/><circle cx="${x-2.500}" cy="${E.y+3}" r="1.400" fill="#fff"/></g>`;
  s+=`<g clip-path="url(#hc${u})"><g transform="translate(105 98)">`+(P.muz||nf)(K)+`<circle cx="-31" cy="10" r="8" fill="#ff8fa3" opacity=".45"/><circle cx="31" cy="10" r="8" fill="#ff8fa3" opacity=".45"/><path d="M-33 8l4 3M-31 6l4 3M33 8l-4 3M31 6l-4 3" stroke="#fff" stroke-width="1.200" opacity=".6" stroke-linecap="round"/>`
@@ -264,9 +258,10 @@ function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clear
 function say(t,f){if((S.sleep||S.dead)&&!f)return;const b=$('say');if(b.textContent===t)return;b.textContent=t;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}
 function hop(){const s=$('sm');s.classList.remove('hop');void s.getBoundingClientRect();s.classList.add('hop')}
 function burst(n,k){for(let i=0;i<(k||5);i++)setTimeout(()=>{const f=document.createElement('span');f.className='pt';f.innerHTML=I(n,18+Math.random()*10);f.style.left=(38+Math.random()*24)+'%';f.style.top=(90+Math.random()*50)+'px';f.style.setProperty('--dx',(Math.random()*44-22)+'px');$('stage').appendChild(f);setTimeout(()=>f.remove(),1400)},i*90)}
-function die(){const m=[['не хватало еды',S.food],['не хватало сна',S.rest],['не хватало чистоты',S.clean]].sort((a,b)=>a[1]-b[1])[0];S.cause=m[0];S.lived=Math.floor((Date.now()-S.born)/864e5)+1;S.best=Math.max(S.best||0,S.lived);S.deaths=(S.deaths||0)+1;S.dead=true;S.sleep=false;toast('Питомец ушёл на радугу')}
-function tick(n,m){if(S.dead||!S.pet)return;for(let i=0;i<n;i++){if(S.sleep){S.rest=cl(S.rest+1.2*m);S.food=cl(S.food-.05*m);S.clean=cl(S.clean-.03*m)}else{S.food=cl(S.food-.15*m);S.rest=cl(S.rest-.1*m);S.clean=cl(S.clean-.12*m)}
- const low=[S.food,S.rest,S.clean].some(v=>v<20);if(low)S.hp=Math.max(m<1?5:0,S.hp-.5*m);else if(S.food>50&&S.rest>30)S.hp=cl(S.hp+.3*m);
+function die(){const m=[['не хватало еды',S.food],['не хватало сна',S.rest],['не хватало чистоты',S.clean]].sort((a,b)=>a[1]-b[1])[0];S.cause=m[0];S.lived=Math.max(0,Math.floor((Date.now()-S.born)/864e5));S.best=Math.max(S.best||0,S.lived);S.deaths=(S.deaths||0)+1;S.dead=true;S.sleep=false;toast('Питомец ушёл на радугу')}
+const D_NEED=.002315,D_SLEEP=.0008,R_SLEEP=.0278,D_HP=.01157,R_HP=.01;
+function tick(n,m){if(S.dead||!S.pet)return;for(let i=0;i<n;i++){if(S.sleep){S.rest=cl(S.rest+R_SLEEP*m);S.food=cl(S.food-D_SLEEP*m);S.clean=cl(S.clean-D_SLEEP*m)}else{S.food=cl(S.food-D_NEED*m);S.rest=cl(S.rest-D_NEED*m);S.clean=cl(S.clean-D_NEED*m)}
+ const low=[S.food,S.rest,S.clean].some(v=>v<20);if(low)S.hp=Math.max(0,S.hp-D_HP*m);else if(S.food>50&&S.rest>30&&S.clean>30)S.hp=cl(S.hp+R_HP*m);
  if(S.hp<=0){die();break}if(S.sleep&&S.rest>=100)S.sleep=false}S.last=Date.now()}
 function look(){const avg=(S.food+S.rest+S.hp+S.clean)/4;let e='',d='M-8 14Q0 21 8 14',c='';
  if(S.dead){}else if(S.sleep){e='zzz';d='M-5 17Q0 19 5 17'}else if(S.hp<40){e='med';d='M-8 20Q0 13 8 20';c='sad'}else if(S.food<25){e='bowl';d='M-6 18Q0 15 6 18';c='sad'}else if(S.rest<25){e='moon';d='M-7 17H7'}else if(S.clean<25){e='bath';d='M-8 20Q0 13 8 20';c='sad'}else if(avg>75){d='M-11 12Q0 28 11 12';c='happy'}
@@ -275,8 +270,10 @@ function look(){const avg=(S.food+S.rest+S.hp+S.clean)/4;let e='',d='M-8 14Q0 21
  if(S.dead)$('say').textContent='Питомец ушёл на радугу'}
 function drawPet(){const wear=Object.assign({},S.eq,T),sig=JSON.stringify([S.pet,S.color,wear,S.dead]);if(sig===drawPet.sig)return;const first=!drawPet.sig;drawPet.sig=sig;$('sm').innerHTML=S.dead?graveSVG:petInner(S.pet,S.color,wear);if(!first)hop()}
 function updNeeds(){const n=$('needs'),v=[S.food,S.rest,S.hp,S.clean];if(n.children.length!==4)n.innerHTML=['bowl','moon','heart','bath'].map(e=>`<div class="nd">${I(e,20)}<div class="nb"><i></i></div></div>`).join('');[...n.querySelectorAll('i')].forEach((i,k)=>{i.style.width=v[k]+'%';i.style.background=v[k]<25?'#e5484d':v[k]<55?'#f0a030':'#3fc06a'})}
-function ageText(){return S.name}
-function reward(sn,fn,msg){S.coins+=sn;S.size+=sn;S.rest=cl(S.rest-3);S.food=cl(S.food-2);S.clean=cl(S.clean-3);say(msg);hop();render()}
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function streak(){return S.dead?0:Math.max(0,Math.floor((Date.now()-S.born)/864e5))}
+function ageText(){const d=streak();return esc(S.name)+'<span class="streak'+(d?'':' off')+'">'+I('flame',17)+'<b>'+d+'</b></span>'}
+function reward(sn,fn,msg){S.coins+=sn;S.size+=sn;S.rest=cl(S.rest-1);S.food=cl(S.food-1);S.clean=cl(S.clean-1);say(msg);hop();render()}
 function pending(){return Object.values(T).map(byId).filter(i=>!S.own.includes(i.id))}
 const CROP={head:'35 8 140 140',face:'35 8 140 140',neck:'35 78 140 140',body:'22 92 166 166'};
 const thumb=i=>`<svg viewBox="${CROP[i.slot]}" width="58" height="58" style="display:block">${petInner(S.pet,S.color,{[i.slot]:i.id},'w'+i.id)}</svg>`;
@@ -292,9 +289,9 @@ function careHtml(){if(S.dead)return deadHtml();return `<div class="st">Поко
 function panel(){const p=$('v'),h=tab==='games'?gamesView():tab==='care'?careHtml():wardrobe();
  if(p.dataset.h!==h){const o=p.querySelector('.sc'),y=o?o.scrollTop:0;p.dataset.h=h;p.innerHTML=h;const n=p.querySelector('.sc');if(n)n.scrollTop=y}
  if(tab==='games'&&!S.dead)updGames()}
-function render(){if(!S.pet)return;$('coins').textContent=S.coins;$('age').textContent=ageText();updNeeds();drawPet();look();$('sm').style.transform='scale('+(.8+Math.min(S.size/150,1)*.25)+')';panel();save()}
+function render(){if(!S.pet)return;$('coins').textContent=S.coins;$('age').innerHTML=ageText();updNeeds();drawPet();look();$('sm').style.transform='scale('+(.8+Math.min(S.size/150,1)*.25)+')';panel();save()}
 function setTab(t){const was=tab;tab=t;if(was==='shop'&&t!=='shop')T={};document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('on',x.dataset.t===t));$('v').dataset.h='';panel();if(was==='shop'&&t!=='shop')render()}
-$('hdr').innerHTML='<span class="pill" data-tip="Монеты нужны на еду, лекарства и одежду">'+I('coin',18)+' <b id="coins">0</b></span><span class="pill" id="age" data-tip="Имя питомца"></span><span class="pill" id="gear">'+I('gear',20)+'</span>';
+$('hdr').innerHTML='<span class="pill" data-tip="Монеты нужны на еду, лекарства и одежду">'+I('coin',18)+' <b id="coins">0</b></span><span class="pill" id="age" data-tip="Имя питомца и сколько дней он живёт с вами"></span><span class="pill" id="gear">'+I('gear',20)+'</span>';
 $('nav').innerHTML=[['games','game','Игры'],['care','bowl','Уход'],['shop','shirt','Гардероб']].map((x,i)=>`<button class="${i?'':'on'}" data-t="${x[0]}">${I(x[1],26)}${x[2]}</button>`).join('');
 $('room').innerHTML=ROOM;
 $('nav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setTab(b.dataset.t)});
@@ -317,7 +314,7 @@ function drawPicker(){const P=PETS[pk.p];$('ovl').innerHTML=`<div class="gc pk">
 function startPet(){const P=PETS[pk.p],keep={coins:S.coins,own:S.own,eq:S.eq,tut:S.tut,best:S.best,deaths:S.deaths,cd:S.cd,day:S.day,codes:S.codes};S=Object.assign(DEF(),keep,{pet:pk.p,color:pk.c,name:(pk.n||'').trim().slice(0,12)||P.nm});T={};drawPet.sig='';$('ovl').style.display='none';$('ovl').innerHTML='';$('say').textContent='';say('Привет! Я '+S.name,1);render();if(!S.tut)setTimeout(()=>tutShow(0),400)}
 function openSettings(){const o=$('ovl');o.style.display='flex';o.innerHTML=`<div class="gc"><div class="gh"><span>Настройки</span></div><div class="lb">Имя питомца</div><input id="nm" maxlength="12" value="${S.name.replace(/"/g,'')}"><div class="lb">Промокод</div><div class="row"><input id="pc" maxlength="16" placeholder="Введите код" style="text-transform:uppercase"><button data-s="promo" style="flex:none;padding:8px 14px">Применить</button></div><div class="row" style="margin-top:12px"><button class="sec" data-s="tut">Обучение</button></div><button id="sx" style="width:100%;margin-top:10px">Готово</button></div>`}
 function applyPromo(){const el=$('pc'),k=(el.value||'').trim().toUpperCase();if(!k)return toast('Введите промокод');const p=PROMO[k];if(!p)return toast('Такого промокода нет');if(S.codes.includes(k))return toast('Этот промокод уже использован');S.codes.push(k);if(p.c)S.coins+=p.c;if(p.item&&!S.own.includes(p.item))S.own.push(p.item);el.value='';toast('Промокод принят'+(p.c?': +'+p.c+' монет':'')+(p.item?', новая вещь':''));render()}
-$('ovl').addEventListener('input',e=>{if(e.target.id==='pn')pk.n=e.target.value;if(e.target.id==='nm'){S.name=e.target.value.slice(0,12);$('age').textContent=ageText();save()}});
+$('ovl').addEventListener('input',e=>{if(e.target.id==='pn')pk.n=e.target.value;if(e.target.id==='nm'){S.name=e.target.value.slice(0,12);$('age').innerHTML=ageText();save()}});
 $('ovl').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
  if(d.p){pk.p=d.p;pk.c=0;return drawPicker()}
  if(d.pc!==undefined){pk.c=+d.pc;return drawPicker()}
@@ -364,8 +361,8 @@ function game(kind){const left=Math.ceil(((S.cd[kind]||0)+60000-Date.now())/1000
   $('th').onclick=()=>{thr++;const hit=x>=38&&x<=58;if(hit)hits++;score(hits);$('th').textContent='Бросить ('+(5-thr)+')';toast(hit?'Попал!':'Мимо!');if(thr>=5){clearInterval(tm);$('th').disabled=true;setTimeout(()=>fin(hits*5,hits*8,'Меткий бросок!','Попаданий '+hits+'/5','ball'),400)}}}}
 function dailyBonus(){const t=new Date().toDateString();if(S.pet&&S.day!==t){S.day=t;S.coins+=25;setTimeout(()=>toast('Ежедневный подарок: +25 монет'),900)}}
 $('sm').addEventListener('touchstart',()=>{},{passive:true});
-if(S.pet){const n=Math.min(1800,Math.floor((Date.now()-S.last)/2000));if(n>5)tick(n,.5);if(!$('say').textContent)say(pick(PETS[S.pet].say),1)}
-setInterval(()=>{if(!S.pet)return;dailyBonus();if(!S.dead){const was=S.sleep;tick(1,1);
+if(S.pet){const n=Math.min(60000,Math.floor((Date.now()-S.last)/2000));if(n>5)tick(n,1);if(!$('say').textContent)say(pick(PETS[S.pet].say),1)}
+setInterval(()=>{if(!S.pet)return;dailyBonus();if(!S.dead){const was=S.sleep;tick(Math.min(60000,Math.max(1,Math.floor((Date.now()-S.last)/2000))),1);
  if(was&&!S.sleep)say('Выспался! Доброе утро',1);else if(S.sleep)say('Zzz…',1);else if(Math.random()<.4){if(S.hp<20)say('Спасите, мне очень плохо!');else if(S.hp<40)say('Мне плохо…');else if(S.food<25)say('Я голодный!');else if(S.rest<25)say('Хочу спать');else if(S.clean<25)say('Хочу помыться');else say(pick(PETS[S.pet].say))}}render()},2000);
 setInterval(()=>{if(tab==='games'&&!S.dead)updGames()},1000);
 if(!S.pet)openPicker();else render();
